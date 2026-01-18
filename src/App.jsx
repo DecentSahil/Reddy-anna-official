@@ -6,7 +6,7 @@ import Tabs from './components/Tabs';
 import SearchBar from './components/SearchBar';
 import MatchList from './components/MatchList';
 import PaymentTrust from './components/PaymentTrust';
-import FloatingWhatsApp from './components/FloatingWhatsApp';
+import FloatingWhatsApp from './components/FloatingWhatsapp';
 import BottomNav from './components/BottomNav';
 import Footer from './components/Footer';
 import MainSlider from './components/MainSlider';
