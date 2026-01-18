@@ -15,6 +15,8 @@ import InfoSection from './components/InfoSection';
 import CompanyTable from './components/CompanyTable';
 import PromoBanner from './components/PromoBanner';
 import CrickBet from './components/CrickBet';
+import { Analytics } from '@vercel/analytics/react';
+
 function App() {
   return (
     <div className="relative min-h-screen bg-[#0f172a] text-white">
@@ -37,6 +39,7 @@ function App() {
       <Footer />
       <FloatingWhatsApp />
       <BottomNav />
+      <Analytics />
     </div>
   );
 }
