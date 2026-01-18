@@ -1,10 +1,14 @@
 import React from 'react';
 import { MessageCircle, Youtube, Pin, Link as LinkIcon, ChevronUp } from 'lucide-react';
+import { track } from '@vercel/analytics';
 
 const Footer = () => {
-  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+  const scrollToTop = () => {
+    track('Navigation', { action: 'Scroll to Top', location: 'Footer' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
-  // Use the same centralized logic for the WhatsApp URL
+  // Centralized logic for the WhatsApp URL
   const wpNumber = import.meta.env.VITE_WHATSAPP_NUMBER;
   const wpMessage = import.meta.env.VITE_WHATSAPP_MESSAGE;
   const whatsappLink = `https://wa.me/${wpNumber}?text=${encodeURIComponent(wpMessage)}`;
@@ -45,9 +49,9 @@ const Footer = () => {
                 Social Platforms
               </h5>
               <div className="flex gap-3">
-                <SocialIcon icon={<Pin size={16} />} color="bg-red-600" />
-                <SocialIcon icon={<LinkIcon size={16} />} color="bg-gray-600" />
-                <SocialIcon icon={<Youtube size={16} />} color="bg-red-600" />
+                <SocialIcon icon={<Pin size={16} />} color="bg-red-600" platform="Pinterest" />
+                <SocialIcon icon={<LinkIcon size={16} />} color="bg-gray-600" platform="Main Site" />
+                <SocialIcon icon={<Youtube size={16} />} color="bg-red-600" platform="YouTube" />
               </div>
             </div>
           </div>
@@ -76,6 +80,7 @@ const Footer = () => {
                 href={whatsappLink}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => track('WhatsApp Click', { location: 'Footer CTA' })}
                 className="flex items-center justify-center gap-2 rounded-full bg-green-500 px-6 py-4 text-xs font-black uppercase text-white shadow-lg shadow-green-500/20 hover:bg-green-600 active:scale-95 transition-all"
               >
                 <MessageCircle size={18} fill="white" /> Get The Reddy Anna ID Now
@@ -105,7 +110,14 @@ const FooterColumn = ({ title, links }) => (
     <ul className="space-y-3">
       {links.map((link) => (
         <li key={link}>
-          <a href="#" className="text-xs text-gray-400 hover:text-yellow-500 transition-colors font-medium">
+          <a 
+            href="#" 
+            onClick={(e) => {
+              e.preventDefault();
+              track('Footer Link Click', { link_name: link });
+            }}
+            className="text-xs text-gray-400 hover:text-yellow-500 transition-colors font-medium"
+          >
             {link}
           </a>
         </li>
@@ -114,8 +126,15 @@ const FooterColumn = ({ title, links }) => (
   </div>
 );
 
-const SocialIcon = ({ icon, color }) => (
-  <a href="#" className={`${color} h-10 w-10 rounded-full flex items-center justify-center text-white hover:opacity-80 transition-opacity shadow-lg`}>
+const SocialIcon = ({ icon, color, platform }) => (
+  <a 
+    href="#" 
+    onClick={(e) => {
+      e.preventDefault();
+      track('Social Click', { platform: platform, location: 'Footer' });
+    }}
+    className={`${color} h-10 w-10 rounded-full flex items-center justify-center text-white hover:opacity-80 transition-opacity shadow-lg`}
+  >
     {icon}
   </a>
 );

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Tv, Monitor, MessageCircle } from 'lucide-react';
+import { track } from '@vercel/analytics'; // 1. Import tracking
 
 const MatchList = () => {
   const categories = ["INPLAY", "CRICKET", "FOOTBALL", "TENNIS", "CASINO", "HORSE RACING", "KABADDI", "POLITICS"];
@@ -35,24 +36,20 @@ const MatchList = () => {
     { id: 25, league: "Hobart Hurricanes v Sydney Thunder / Jan 17 2026 12:00", b1: "1.9", l1: "1.93", b2: "2.05", l2: "2.1" },
     { id: 26, league: "England v Australia / Jan 18 2026 15:30", b1: "1.85", l1: "1.88", b2: "2.25", l2: "2.3" },
   ];
+
+  const handleOddsClick = (matchName, oddType, val) => {
+    track('Odds Interaction', {
+      match: matchName,
+      type: oddType,
+      value: val,
+      location: 'Match List Table'
+    });
+    // Optional: Redirect to WhatsApp automatically when they click an odd
+    // window.open(whatsappURL, '_blank');
+  };
+
   return (
     <section className="w-full bg-[#0f172a] pb-32">
-
-      {/* Category Bar: Added top-[56px] to offset the fixed Header */}
-      {/* <div className="sticky top-[56px] z-30 bg-[#1e293b] overflow-x-auto no-scrollbar shadow-lg border-b border-gray-800">
-        <div className="flex">
-          {categories.map((cat, i) => (
-            <button
-              key={cat}
-              className={`px-5 py-3 text-[11px] font-black tracking-widest border-r border-gray-800 whitespace-nowrap transition-colors
-                ${i === 0 ? 'bg-yellow-500 text-black' : 'text-gray-400 hover:bg-gray-800 hover:text-white'}`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-      </div> */}
-
       {/* Table Header */}
       <div className="grid grid-cols-12 bg-black/50 border-b border-gray-800 py-2 px-3">
         <div className="col-span-8 text-[10px] font-black text-gray-500 uppercase tracking-tighter">Live Events</div>
@@ -66,13 +63,11 @@ const MatchList = () => {
       <div className="flex flex-col">
         {matches.map((match) => (
           <div key={match.id} className="grid grid-cols-12 items-center bg-[#1e293b] border-b border-gray-800/50 hover:bg-gray-800/40 py-2 px-3">
-
-            <div className="col-span-7 flex items-center gap-2 min-w-0">
-              {match.live ? (
-                <div className="shrink-0 h-2 w-2 rounded-full bg-red-600 animate-pulse" />
-              ) : (
-                <div className="shrink-0 h-2 w-2 rounded-full bg-gray-600" />
-              )}
+            <div
+              className="col-span-7 flex items-center gap-2 min-w-0 cursor-pointer"
+              onClick={() => track('Match View', { match: match.league })}
+            >
+              <div className={`shrink-0 h-2 w-2 rounded-full ${match.live ? 'bg-red-600 animate-pulse' : 'bg-gray-600'}`} />
               <span className="text-[11px] font-bold text-gray-100 truncate uppercase tracking-tight">{match.league}</span>
             </div>
 
@@ -83,39 +78,46 @@ const MatchList = () => {
             {/* Odds Columns */}
             <div className="col-span-4 grid grid-cols-2 gap-1">
               <div className="flex gap-[1px]">
-                <OddsBox val={match.b1} type="back" />
-                <OddsBox val={match.l1} type="lay" />
+                <OddsBox
+                  val={match.b1}
+                  type="back"
+                  onClick={() => handleOddsClick(match.league, 'Back 1', match.b1)}
+                />
+                <OddsBox
+                  val={match.l1}
+                  type="lay"
+                  onClick={() => handleOddsClick(match.league, 'Lay 1', match.l1)}
+                />
               </div>
               <div className="flex gap-[1px]">
-                <OddsBox val={match.b2} type="back" />
-                <OddsBox val={match.l2} type="lay" />
+                <OddsBox
+                  val={match.b2}
+                  type="back"
+                  onClick={() => handleOddsClick(match.league, 'Back 2', match.b2)}
+                />
+                <OddsBox
+                  val={match.l2}
+                  type="lay"
+                  onClick={() => handleOddsClick(match.league, 'Lay 2', match.l2)}
+                />
               </div>
             </div>
           </div>
         ))}
       </div>
-
-      {/* CTA Button: Integrated .env URL */}
-      {/* <div className="fixed bottom-24 left-1/2 -translate-x-1/2 w-[90%] max-w-md z-40">
-        <a
-          href={whatsappURL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center justify-center gap-3 bg-green-500 text-white py-4 rounded-2xl font-black uppercase text-sm shadow-[0_20px_50px_rgba(34,197,94,0.3)] active:scale-95 transition-all"
-        >
-          <MessageCircle size={22} fill="white" />
-          Get Reddy Anna ID Now
-        </a>
-      </div> */}
     </section>
   );
 };
 
-const OddsBox = ({ val, type }) => (
-  <button className={`
-    h-9 w-full flex items-center justify-center text-[11px] font-black rounded-sm
-    ${val === '0' ? 'bg-gray-800 text-gray-600' : (type === 'back' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' : 'bg-pink-500/20 text-pink-400 border border-pink-500/30')}
-  `}>
+// 3. Updated OddsBox to accept onClick prop
+const OddsBox = ({ val, type, onClick }) => (
+  <button
+    onClick={onClick}
+    className={`
+      h-9 w-full flex items-center justify-center text-[11px] font-black rounded-sm transition-transform active:scale-90
+      ${val === '0' ? 'bg-gray-800 text-gray-600 cursor-not-allowed' : (type === 'back' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30 hover:bg-blue-500/30' : 'bg-pink-500/20 text-pink-400 border border-pink-500/30 hover:bg-pink-500/30')}
+    `}
+  >
     {val}
   </button>
 );

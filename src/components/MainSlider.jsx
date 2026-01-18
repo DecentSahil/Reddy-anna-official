@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import { ChevronLeft, ChevronRight, MessageCircle } from 'lucide-react';
+import { track } from '@vercel/analytics'; // 1. Import Analytics
 
 // Import local images from assets
 import slide1 from '../assets/slide1.avif';
@@ -11,6 +12,7 @@ import slide3 from '../assets/slide3.webp';
 const wpNumber = import.meta.env.VITE_WHATSAPP_NUMBER;
 const wpMessage = import.meta.env.VITE_WHATSAPP_MESSAGE;
 const whatsappURL = `https://wa.me/${wpNumber}?text=${encodeURIComponent(wpMessage)}`;
+
 const slides = [
   {
     id: 1,
@@ -45,16 +47,22 @@ const MainSlider = () => {
   const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
 
+  // 2. Tracking function for slide clicks
+  const handleSlideClick = (slideTitle) => {
+    track('WhatsApp Click', { 
+      location: 'Main Slider',
+      slide_name: slideTitle 
+    });
+  };
+
   return (
     <section className="relative w-full py-4 bg-black">
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex">
           {slides.map((slide) => (
             <div key={slide.id} className="relative flex-[0_0_88%] min-w-0 px-2 md:flex-[0_0_75%]">
-              {/* Corrected Tailwind height syntax */}
               <div className="relative h-[250px] md:h-[450px] overflow-hidden rounded-3xl shadow-2xl">
 
-                {/* Local Image */}
                 <img
                   src={slide.image}
                   alt={slide.title}
@@ -81,6 +89,7 @@ const MainSlider = () => {
                     href={whatsappURL}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => handleSlideClick(slide.title)}
                     className="mt-6 flex items-center gap-2 rounded-full bg-white px-8 py-3 text-sm font-black uppercase text-green-700 shadow-xl active:scale-95 transition-all hover:bg-gray-100"
                   >
                     <MessageCircle size={20} fill="currentColor" />
@@ -98,7 +107,6 @@ const MainSlider = () => {
         </div>
       </div>
 
-      {/* Navigation Buttons */}
       <button
         onClick={scrollPrev}
         className="absolute left-4 top-1/2 -translate-y-1/2 z-20 h-10 w-10 flex items-center justify-center rounded-full bg-black/50 text-white border border-white/20"

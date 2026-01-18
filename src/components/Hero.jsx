@@ -1,5 +1,6 @@
 import React from 'react';
 import { MessageCircle, ShieldCheck, Zap } from 'lucide-react';
+import { track } from '@vercel/analytics';
 
 const Hero = () => {
   // Use centralized contact info
@@ -37,6 +38,7 @@ const Hero = () => {
               href={whatsappURL}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => track('WhatsApp Click', { location: 'Hero Banner' })}
               className="group relative inline-flex items-center justify-center gap-3 rounded-full bg-white px-8 py-4 text-base md:text-lg font-black uppercase tracking-tight text-green-800 shadow-[0_10px_20px_rgba(0,0,0,0.3)] transition-all hover:bg-green-50 active:scale-95"
             >
               <div className="relative z-10 flex items-center gap-3">

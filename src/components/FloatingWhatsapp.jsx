@@ -1,5 +1,6 @@
 import React from 'react';
 import { MessageCircle, Send } from 'lucide-react';
+import { track } from '@vercel/analytics';
 
 const FloatingWhatsApp = () => {
   // 1. Centralize the logic for the URL with a default message
@@ -19,6 +20,7 @@ const FloatingWhatsApp = () => {
           href={telegramLink}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => track('Social Click', { platform: 'Telegram', location: 'Floating Action' })}
           className="relative flex h-14 w-14 items-center justify-center rounded-full bg-[#0088cc] text-white shadow-[0_10px_25px_rgba(0,136,204,0.4)] transition-all active:scale-90 hover:-translate-y-1"
         >
           <Send size={28} fill="white" className="mr-1" />
@@ -35,6 +37,7 @@ const FloatingWhatsApp = () => {
           href={whatsappLink}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => track('WhatsApp Click', { location: 'Floating Action' })}
           className="relative flex h-16 w-16 items-center justify-center rounded-full bg-green-500 text-white shadow-[0_10px_30px_rgba(34,197,94,0.5)] transition-all active:scale-90 hover:-translate-y-1"
         >
           <MessageCircle size={32} fill="white" />

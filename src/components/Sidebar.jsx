@@ -1,11 +1,19 @@
 import React from 'react';
-import { X, Home, Info, Shield, Phone, MessageSquare } from 'lucide-react';
+import { X, Home, Info, Shield, Phone, LifeBuoy } from 'lucide-react';
+import { Link } from 'react-router-dom'; // 1. Import Link for internal routing
+import { track } from '@vercel/analytics';
 
 const Sidebar = ({ isOpen, onClose }) => {
-    // 1. Create the WhatsApp URL using environment variables
-    const whatsappNumber = import.meta.env.VITE_WHATSAPP_NUMBER;
-    const whatsappMessage = encodeURIComponent(import.meta.env.VITE_WHATSAPP_MESSAGE);
-    const whatsappLink = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
+    
+    // Handler for navigation tracking
+    const handleNavClick = (label, isSupport = false) => {
+        if (isSupport) {
+            track('Support Page Entry', { reason: 'Agent Transaction Issue', location: 'Sidebar' });
+        } else {
+            track('Sidebar Navigation', { target: label });
+        }
+        onClose(); // Close sidebar after clicking
+    };
 
     return (
         <>
@@ -25,23 +33,26 @@ const Sidebar = ({ isOpen, onClose }) => {
                 </div>
 
                 <nav className="flex flex-col gap-4">
-                    <SidebarLink icon={<Home size={20} />} label="Home" onClick={onClose} />
-                    <SidebarLink icon={<Info size={20} />} label="About Us" onClick={onClose} />
-                    <SidebarLink icon={<Shield size={20} />} label="Privacy Policy" onClick={onClose} />
-                    <SidebarLink icon={<Phone size={20} />} label="Contact Us" onClick={onClose} />
+                    <SidebarLink icon={<Home size={20} />} label="Home" to="/" onClick={() => handleNavClick('Home')} />
+                    <SidebarLink icon={<Info size={20} />} label="About Us" to="/about" onClick={() => handleNavClick('About Us')} />
+                    <SidebarLink icon={<Shield size={20} />} label="Privacy Policy" to="/privacy" onClick={() => handleNavClick('Privacy Policy')} />
+                    <SidebarLink icon={<Phone size={20} />} label="Contact Us" to="/contact" onClick={() => handleNavClick('Contact Us')} />
                     
-                    {/* 2. Updated WhatsApp Support Link */}
+                    {/* Updated Official Support: Now opens PaymentSubmit Page */}
                     <SidebarLink 
-                        icon={<MessageSquare size={20} />} 
-                        label="WhatsApp Support" 
-                        isExternal
-                        href={whatsappLink}
+                        icon={<LifeBuoy size={20} />} 
+                        label="Official Support" 
+                        to="/payment-submit" 
+                        onClick={() => handleNavClick('Official Support', true)}
                         highlight 
                     />
                 </nav>
 
                 <div className="absolute bottom-10 left-6 right-6">
-                    <div className="rounded-xl bg-yellow-500 p-4 text-center">
+                    <div 
+                        className="rounded-xl bg-yellow-500 p-4 text-center cursor-pointer active:scale-95 transition-transform"
+                        onClick={() => track('Bonus Click', { location: 'Sidebar Footer' })}
+                    >
                         <p className="text-[10px] font-black uppercase text-black">New User Bonus</p>
                         <p className="text-lg font-bold text-black">GET 100% OFF</p>
                     </div>
@@ -51,24 +62,16 @@ const Sidebar = ({ isOpen, onClose }) => {
     );
 };
 
-// 3. Updated SidebarLink to handle external <a> links or regular buttons
-const SidebarLink = ({ icon, label, onClick, highlight, isExternal, href }) => {
+// Updated SidebarLink to use React Router Link
+const SidebarLink = ({ icon, label, onClick, highlight, to }) => {
     const className = `flex items-center gap-4 rounded-lg px-4 py-3 text-sm font-bold transition-colors w-full text-left ${
-        highlight ? 'bg-green-600 text-white hover:bg-green-500' : 'bg-gray-900 text-gray-300 hover:text-white'
+        highlight ? 'bg-red-600 text-white hover:bg-red-500' : 'bg-gray-900 text-gray-300 hover:text-white'
     }`;
 
-    if (isExternal) {
-        return (
-            <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
-                {icon} {label}
-            </a>
-        );
-    }
-
     return (
-        <button onClick={onClick} className={className}>
+        <Link to={to} onClick={onClick} className={className}>
             {icon} {label}
-        </button>
+        </Link>
     );
 };
 
