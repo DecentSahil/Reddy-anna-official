@@ -2,38 +2,43 @@ import React, { useCallback } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import { ChevronLeft, ChevronRight, MessageCircle } from 'lucide-react';
-import { track } from '@vercel/analytics'; // 1. Import Analytics
+import { track } from '@vercel/analytics';
 
-// Import local images from assets
 import slide1 from '../assets/slide1.avif';
 import slide2 from '../assets/slide2.jpg';
 import slide3 from '../assets/slide3.webp';
+import iplPromo from '../assets/ipl_promo.jpg';
 
-const wpNumber = import.meta.env.VITE_WHATSAPP_NUMBER;
-const wpMessage = import.meta.env.VITE_WHATSAPP_MESSAGE;
-const whatsappURL = `https://wa.me/${wpNumber}?text=${encodeURIComponent(wpMessage)}`;
+const whatsappURL = "https://wa.me/9142504568";
 
 const slides = [
   {
+    id: 0,
+    image: iplPromo,
+    title: "GET EXCLUSIVE",
+    subtitle: "IPL ID NOW",
+    cta: "GET YOUR ID"
+  },
+  {
     id: 1,
     image: slide1,
-    title: "INDIA'S #1",
-    subtitle: "TRUSTED EXCHANGE",
-    cta: "WHATSAPP NOW"
+    title: "INDIA'S MOST TRUSTED",
+    subtitle: "BETTING EXCHANGE",
+    cta: "GET YOUR ID NOW"
   },
   {
     id: 2,
     image: slide2,
     title: "INSTANT WITHDRAWAL",
-    subtitle: "24/7 CUSTOMER SUPPORT",
-    cta: "GET ID NOW"
+    subtitle: "24/7 LIVE SUPPORT",
+    cta: "JOIN US ON WHATSAPP"
   },
   {
     id: 3,
     image: slide3,
     title: "LIVE CASINO",
-    subtitle: "PLAY WITH REAL DEALERS",
-    cta: "START PLAYING"
+    subtitle: "REAL DEALERS • REAL WINS",
+    cta: "START PLAYING NOW"
   }
 ];
 
@@ -42,64 +47,54 @@ const MainSlider = () => {
     loop: true,
     align: 'center',
     skipSnaps: false
-  }, [Autoplay({ delay: 4000 })]);
+  }, [Autoplay({ delay: 5000 })]);
 
   const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
 
-  // 2. Tracking function for slide clicks
-  const handleSlideClick = (slideTitle) => {
-    track('WhatsApp Click', { 
-      location: 'Main Slider',
-      slide_name: slideTitle 
-    });
-  };
-
   return (
-    <section className="relative w-full py-4 bg-black">
+    <section className="relative w-full bg-black overflow-hidden group/slider">
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex">
           {slides.map((slide) => (
-            <div key={slide.id} className="relative flex-[0_0_88%] min-w-0 px-2 md:flex-[0_0_75%]">
-              <div className="relative h-[250px] md:h-[450px] overflow-hidden rounded-3xl shadow-2xl">
-
+            <div key={slide.id} className="relative flex-[0_0_100%] min-w-0">
+              <div className="relative h-[250px] md:h-[550px] overflow-hidden">
                 <img
                   src={slide.image}
                   alt={slide.title}
                   className="absolute inset-0 h-full w-full object-cover"
                 />
+                
+                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
 
-                <div className="absolute inset-0 bg-black/40 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                <div className="absolute inset-0 flex flex-col items-start justify-center px-6 md:px-20">
+                    <div className="animate-in fade-in slide-in-from-left-10 duration-700">
+                        <span className="inline-block bg-accent-gold text-black px-4 py-1.5 text-[10px] md:text-xs font-black uppercase tracking-widest rounded-full mb-6 shadow-[0_0_20px_rgba(255,215,0,0.3)]">
+                            OFFICIAL 2026 PARTNER
+                        </span>
+                        
+                        <h2 className="text-2xl md:text-7xl font-black text-white leading-tight uppercase tracking-tighter drop-shadow-2xl">
+                            {slide.title} <br />
+                            <span className="text-accent-gold italic font-serif">{slide.subtitle}</span>
+                        </h2>
 
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
-                  <span className="mb-2 rounded bg-yellow-500 px-3 py-1 text-[10px] font-black text-black uppercase tracking-widest">
-                    OFFICIAL 2026 PARTNER
-                  </span>
+                        <p className="mt-4 text-[10px] md:text-lg text-gray-300 font-medium tracking-wide max-w-xl">
+                            24/7 Instant Withdrawals & Deposits. Secure & Licensed Platform.
+                        </p>
 
-                  <h2 className="text-3xl md:text-5xl font-black italic tracking-tighter text-white drop-shadow-lg">
-                    {slide.title} <br />
-                    <span className="text-yellow-500">{slide.subtitle}</span>
-                  </h2>
-
-                  <p className="mt-2 text-[11px] md:text-sm font-bold text-gray-200 uppercase tracking-wide">
-                    Get your ID instantly • Withdrawals in 15 Min
-                  </p>
-
-                  <a
-                    href={whatsappURL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => handleSlideClick(slide.title)}
-                    className="mt-6 flex items-center gap-2 rounded-full bg-white px-8 py-3 text-sm font-black uppercase text-green-700 shadow-xl active:scale-95 transition-all hover:bg-gray-100"
-                  >
-                    <MessageCircle size={20} fill="currentColor" />
-                    {slide.cta}
-                  </a>
-
-                  <div className="mt-6 flex gap-6 opacity-80 text-[9px] font-black uppercase text-white tracking-widest">
-                    <span className="flex items-center gap-1">🛡️ SECURE</span>
-                    <span className="flex items-center gap-1">⚡ INSTANT</span>
-                  </div>
+                        <div className="mt-8">
+                            <a
+                                href={whatsappURL}
+                                target="_blank"
+                                onClick={() => track('Slider CTA', { slide: slide.title })}
+                                className="flex items-center gap-2 md:gap-3 rounded-full bg-accent-gold px-5 py-3 md:px-12 md:py-5 text-[11px] md:text-base font-black uppercase text-black shadow-[0_15px_30px_rgba(255,215,0,0.25)] hover:scale-105 active:scale-95 transition-all w-fit whitespace-nowrap"
+                            >
+                                <MessageCircle size={20} className="md:w-6 md:h-6" fill="currentColor" />
+                                <span>{slide.cta}</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
               </div>
             </div>
@@ -109,16 +104,22 @@ const MainSlider = () => {
 
       <button
         onClick={scrollPrev}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 h-10 w-10 flex items-center justify-center rounded-full bg-black/50 text-white border border-white/20"
+        className="absolute left-4 md:left-10 top-1/2 -translate-y-1/2 z-20 h-10 w-10 md:h-14 md:w-14 flex items-center justify-center rounded-full bg-black/30 text-white backdrop-blur-md border border-white/10 opacity-0 group-hover/slider:opacity-100 transition-all hover:bg-accent-gold hover:text-black hover:border-accent-gold"
       >
-        <ChevronLeft size={24} />
+        <ChevronLeft size={28} />
       </button>
       <button
         onClick={scrollNext}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 h-10 w-10 flex items-center justify-center rounded-full bg-black/50 text-white border border-white/20"
+        className="absolute right-4 md:right-10 top-1/2 -translate-y-1/2 z-20 h-10 w-10 md:h-14 md:w-14 flex items-center justify-center rounded-full bg-black/30 text-white backdrop-blur-md border border-white/10 opacity-0 group-hover/slider:opacity-100 transition-all hover:bg-accent-gold hover:text-black hover:border-accent-gold"
       >
-        <ChevronRight size={24} />
+        <ChevronRight size={28} />
       </button>
+
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+           {slides.map((_, i) => (
+               <div key={i} className={`h-1.5 rounded-full transition-all duration-300 ${i === 0 ? 'w-8 bg-accent-gold' : 'w-4 bg-white/30'}`} />
+           ))}
+      </div>
     </section>
   );
 };

@@ -1,50 +1,47 @@
 import React from 'react';
-import { CreditCard, Smartphone, CheckCircle2 } from 'lucide-react';
+import { ShieldCheck, Zap, HeartHandshake } from 'lucide-react';
 
 const PaymentTrust = () => {
-  const methods = [
-    { name: "UPI", icon: <Smartphone size={16} /> },
-    { name: "GPay", icon: <CheckCircle2 size={16} /> },
-    { name: "Paytm", icon: <CheckCircle2 size={16} /> },
-    { name: "PhonePe", icon: <Smartphone size={16} /> },
-    { name: "Net Banking", icon: <CreditCard size={16} /> }
-  ];
-
   return (
-    <section className="px-4 py-6 bg-[#1a2236] mt-4">
-      <div className="text-center mb-6">
-        <h3 className="text-xs font-black uppercase tracking-widest text-gray-400 mb-1">
-          Accepted Payments
-        </h3>
-        <p className="text-[10px] text-gray-500">Fast & Secure Transactions</p>
-      </div>
-
-      <div className="flex flex-wrap justify-center gap-3">
-        {methods.map((method, index) => (
-          <div 
-            key={index} 
-            className="flex items-center gap-2 rounded-lg bg-[#0f172a] border border-gray-800 px-4 py-2"
-          >
-            <span className="text-yellow-500">{method.icon}</span>
-            <span className="text-[10px] font-bold text-white tracking-tighter uppercase">
-              {method.name}
-            </span>
+    <section className="px-6 py-16 bg-black border-t border-white/5">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          
+          <div className="p-8 rounded-[2.5rem] bg-gradient-to-br from-white/5 to-transparent border border-white/10 flex flex-col items-center text-center group hover:border-accent-gold/50 transition-all">
+            <div className="mb-6 p-4 rounded-2xl bg-accent-gold/10 text-accent-gold group-hover:scale-110 transition-transform">
+              <Zap size={32} />
+            </div>
+            <h3 className="text-xl font-black text-white italic font-serif mb-2 uppercase tracking-tighter">Instant Deposit</h3>
+            <p className="text-gray-500 text-xs font-bold uppercase tracking-widest">Self Deposit & Auto Credit</p>
           </div>
-        ))}
-      </div>
 
-      <div className="mt-8 grid grid-cols-2 gap-4">
-        <div className="flex flex-col items-center justify-center rounded-xl bg-gray-900/50 p-4 border border-green-500/20">
-          <span className="text-2xl font-black text-green-500">100%</span>
-          <span className="text-[9px] font-bold uppercase text-gray-400">Trusted</span>
+          <div className="p-8 rounded-[2.5rem] bg-gradient-to-br from-white/5 to-transparent border border-white/10 flex flex-col items-center text-center group hover:border-accent-gold/50 transition-all">
+            <div className="mb-6 p-4 rounded-2xl bg-accent-gold/10 text-accent-gold group-hover:scale-110 transition-transform">
+              <HeartHandshake size={32} />
+            </div>
+            <h3 className="text-xl font-black text-white italic font-serif mb-2 uppercase tracking-tighter">Fast Withdrawal</h3>
+            <p className="text-gray-500 text-xs font-bold uppercase tracking-widest">3 Min Withdrawal 24/7</p>
+          </div>
+
+          <div className="p-8 rounded-[2.5rem] bg-gradient-to-br from-white/5 to-transparent border border-white/10 flex flex-col items-center text-center group hover:border-accent-gold/50 transition-all">
+            <div className="mb-6 p-4 rounded-2xl bg-accent-gold/10 text-accent-gold group-hover:scale-110 transition-transform">
+              <ShieldCheck size={32} />
+            </div>
+            <h3 className="text-xl font-black text-white italic font-serif mb-2 uppercase tracking-tighter">100% Trusted</h3>
+            <p className="text-gray-500 text-xs font-bold uppercase tracking-widest">Safe & Secure Platform</p>
+          </div>
+
         </div>
-        <div className="flex flex-col items-center justify-center rounded-xl bg-gray-900/50 p-4 border border-yellow-500/20">
-          <span className="text-2xl font-black text-yellow-500">24/7</span>
-          <span className="text-[9px] font-bold uppercase text-gray-400">Support</span>
+
+        <div className="mt-12 flex flex-wrap justify-center gap-6 opacity-40 grayscale hover:grayscale-0 transition-all grayscale-0 opacity-100">
+           {/* Payment Logos Placeholder representation */}
+           <div className="text-[10px] font-black tracking-[0.4em] uppercase text-gray-400 border border-white/10 px-6 py-3 rounded-full">
+             UPI • GPAY • PAYTM • PHONEPE • NETBANKING
+           </div>
         </div>
       </div>
     </section>
   );
 };
 
-export default PaymentTrust;
+export default PaymentTrust;

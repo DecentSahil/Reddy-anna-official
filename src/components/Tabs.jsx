@@ -13,19 +13,21 @@ const Tabs = () => {
   ];
 
   return (
-    <div className="w-full bg-[#1a2236] border-b border-gray-800 sticky top-[60px] z-40">
-      <div className="flex overflow-x-auto no-scrollbar items-center gap-2 px-4 py-3">
+    <div className="w-full bg-primary-bg/95 backdrop-blur-md border-b border-accent-gold/10 sticky top-[65px] z-40">
+      <div className="flex overflow-x-auto no-scrollbar items-center gap-3 px-4 py-3">
         {categories.map((tab) => (
           <button
             key={tab.name}
             onClick={() => setActiveTab(tab.name)}
-            className={`flex items-center gap-2 whitespace-nowrap rounded-full px-5 py-2 text-xs font-bold uppercase tracking-tight transition-all active:scale-95 ${
+            className={`flex items-center gap-2 whitespace-nowrap rounded-full px-6 py-2.5 text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 ${
               activeTab === tab.name
-                ? 'bg-yellow-500 text-black shadow-lg shadow-yellow-500/20'
-                : 'bg-gray-900 text-gray-400 border border-gray-800'
+                ? 'bg-accent-gold text-black shadow-[0_10px_20px_-5px_rgba(232,198,95,0.4)]'
+                : 'bg-white/5 text-gray-500 border border-white/5 hover:border-accent-gold/30 hover:text-gray-300'
             }`}
           >
-            {tab.icon}
+            <span className={activeTab === tab.name ? 'text-black' : 'text-accent-gold/50'}>
+              {tab.icon}
+            </span>
             {tab.name}
           </button>
         ))}

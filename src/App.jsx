@@ -17,23 +17,32 @@ import InfoSection from './components/InfoSection';
 import CompanyTable from './components/CompanyTable';
 import PromoBanner from './components/PromoBanner';
 import CrickBet from './components/CrickBet';
+import QuickActions from './components/QuickActions';
+import LiveOddsTable from './components/LiveOddsTable';
+import TrustGrid from './components/TrustGrid';
+import IDTypes from './components/IDTypes';
+import SafetyFeatures from './components/SafetyFeatures';
+import FAQ from './components/FAQ';
+import SEOContent from './components/SEOContent';
+import IPLMatchList from './components/IPLMatchList';
 import PaymentSubmit from './pages/PaymentSubmit'; // Import your new page
 import { Analytics } from '@vercel/analytics/react';
+import Sidebar from './components/Sidebar';
 
 // Create a Home component for your main landing page content
 const Home = () => (
   <>
     <MainSlider />
-    <CrickBet />
-    <SearchBar />
-    <Tabs />
-    <MatchList />
-    <PromoBanner />
-    <NewsTicker />
-    <PromoSlider />
-    <InfoSection />
-    <CompanyTable />
+    <QuickActions />
+    <LiveOddsTable />
+    <IPLMatchList />
+    <TrustGrid />
+    <IDTypes />
+    <SafetyFeatures />
+    <FAQ />
+    <SEOContent />
     <Banking />
+    <InfoSection />
     <PaymentTrust />
   </>
 );
@@ -41,18 +50,23 @@ const Home = () => (
 function App() {
   return (
     <Router>
-      <div className="relative min-h-screen bg-[#0f172a] text-white">
+      <div className="relative min-h-screen bg-primary-bg text-white font-sans">
         <Header />
         
-        <main className="relative z-10 pb-10">
-          <Routes>
-            {/* Main Landing Page */}
-            <Route path="/" element={<Home />} />
-            
-            {/* Payment Submission Page */}
-            <Route path="/payment-submit" element={<PaymentSubmit />} />
-          </Routes>
-        </main>
+        <div className="flex max-w-[1600px] mx-auto">
+          {/* Persistent Sidebar for Desktop */}
+          <Sidebar isPersistent={true} />
+
+          <main className="flex-1 relative z-10 pb-20 min-w-0">
+            <Routes>
+              {/* Main Landing Page */}
+              <Route path="/" element={<Home />} />
+              
+              {/* Payment Submission Page */}
+              <Route path="/payment-submit" element={<PaymentSubmit />} />
+            </Routes>
+          </main>
+        </div>
 
         <Footer />
         <FloatingWhatsApp />

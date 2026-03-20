@@ -1,4 +1,25 @@
 @import "tailwindcss";
+
+@theme {
+  --color-primary-bg: #000000;
+  --color-accent-gold: #FFD700;
+  --color-whatsapp-green: #25D366;
+  --color-odds-blue: #1E90FF;
+  --color-odds-pink: #FF69B4;
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Montserrat", sans-serif;
+}
+
+:root {
+  background-color: var(--color-primary-bg);
+  color: white;
+  font-family: var(--font-sans);
+}
+
+h1, h2, h3, h4, .font-serif {
+  font-family: var(--font-serif);
+}
+
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar {
     display: none;
@@ -6,6 +27,11 @@
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+  .glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 }
 @keyframes marquee {
